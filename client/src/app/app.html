@@ -1,9 +1,5 @@
-<h1>{{ title }}</h1>
-<p>{{ users() | json }}</p>
-<ul>
-  @for (user of users(); track user) {
-    <li>
-    {{ user.id }} - {{ user.userName }}
-    </li>
-  }
-</ul>
+<app-nav></app-nav>
+
+<div class="container" style="margin-top: 80px">
+  <app-home></app-home>
+</div>
