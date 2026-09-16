@@ -6,6 +6,8 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideToastr } from 'ngx-toastr';
 import { errorInterceptor } from './_interceptors/error/error-interceptor';
+import { jwtInterceptor } from './_interceptors/jwt/jwt-interceptor';
+import { loadingInterceptor } from './_interceptors/loading/loading-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,7 +17,9 @@ export const appConfig: ApplicationConfig = {
     
     provideHttpClient(
       withInterceptors([
-        errorInterceptor
+        errorInterceptor,
+        jwtInterceptor,
+        loadingInterceptor
       ])
     ),
     provideAnimationsAsync(),

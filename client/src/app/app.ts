@@ -2,10 +2,11 @@ import { Component, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Nav } from './_components/nav/nav';
 import { AccountService } from './_services/account/account-service';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Nav],
+  imports: [RouterOutlet, Nav, NgxSpinnerModule],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
