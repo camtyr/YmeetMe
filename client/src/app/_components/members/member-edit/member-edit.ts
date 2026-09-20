@@ -14,10 +14,11 @@ import { GalleryModule } from 'ng-gallery';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { PhotoEditor } from '../photo-editor/photo-editor';
 
 @Component({
   selector: 'app-member-edit',
-  imports: [GalleryModule, TabsModule, FormsModule],
+  imports: [GalleryModule, TabsModule, FormsModule, PhotoEditor],
   templateUrl: './member-edit.html',
   styleUrl: './member-edit.css',
 })

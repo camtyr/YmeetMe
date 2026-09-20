@@ -7,15 +7,15 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class BusyService {
   busyRequestCount = 0;
 
-  constructor(private spinnerService: NgxSpinnerService) { }
+  constructor(private spinnerService: NgxSpinnerService) {}
 
   busy() {
     this.busyRequestCount++;
     this.spinnerService.show(undefined, {
-      type: 'line-scale-party',
-      size: "medium",
-      bdColor: "rgba(255,255,255,0)",
-      color: "#333333",
+      type: 'ball-spin',
+      size: 'medium',
+      bdColor: 'rgba(255,255,255,0)',
+      color: '#333333',
     });
   }
 

@@ -1,7 +1,9 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
   <div class="container">
     <a class="navbar-brand" routerLink="/">Dating App</a>
-    @if ((accountService.currentUser$ | async) === null) {
+    @let currentUser = accountService.currentUser$ | async; 
+    
+    @if (currentUser === null) {
     <form #loginForm="ngForm" class="d-flex" (ngSubmit)="login()">
       <input
         name="username"
@@ -41,9 +43,9 @@
     </ul>
 
     <div class="dropdown" dropdown>
+      <img src="{{currentUser.photoUrl || './assets/user.png'}}" alt="currentUser.photoUrl" />
       <a class="dropdown-toggle text-light text-decoration-none" dropdownToggle
-        >Welcome {{(accountService.currentUser$ | async).userName |
-        titlecase}}</a
+        >Welcome {{currentUser.userName | titlecase}}</a
       >
       <div class="dropdown-menu mt-3" *dropdownMenu>
         <a class="dropdown-item" routerLink="/member/edit">Edit Profile</a>

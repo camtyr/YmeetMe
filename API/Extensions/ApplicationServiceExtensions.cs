@@ -12,11 +12,16 @@ namespace API.Extensions
         {
             #region Add Scoped services to the container
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<IUserRepository, UserRepository>();
             #endregion
 
             #region Add AutoMapper to the container
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+            #endregion
+
+            #region Add Configure
+            services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
             #endregion
 
             #region Add Dbcontext to the container
