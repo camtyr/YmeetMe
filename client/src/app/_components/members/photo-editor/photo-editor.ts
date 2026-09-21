@@ -3,6 +3,7 @@ import {
   Component,
   Input,
   OnInit,
+  Signal,
   signal,
   WritableSignal,
 } from '@angular/core';
@@ -23,7 +24,7 @@ import { Photo } from '../../../_models/photo';
   styleUrl: './photo-editor.css',
 })
 export class PhotoEditor implements OnInit {
-  @Input() member!: Member;
+  @Input() member!: WritableSignal<Member>;
   uploader = signal<FileUploader | null>(null);
   hasBaseDropzoneOver = signal(false);
   baseUrl = environment.apiUrl;
@@ -52,8 +53,8 @@ export class PhotoEditor implements OnInit {
       if (this.user) {
         this.user.photoUrl = photo.url;
         this.accountService.setCurrentUser(this.user);
-        this.member.photoUrl = photo.url;
-        this.member.photos.forEach((p) => {
+        this.member().photoUrl = photo.url;
+        this.member().photos.forEach((p) => {
           if (p.isMain) p.isMain = false;
           if (p.id === photo.id) p.isMain = true;
         });
@@ -63,9 +64,10 @@ export class PhotoEditor implements OnInit {
 
   deletePhoto(photoId: number) {
     this.memberService.deletePhoto(photoId).subscribe(() => {
-      if (this.member) {
-        this.member.photos = this.member.photos.filter((x) => x.id !== photoId);
-      }
+      this.member.update((member) => ({
+        ...member,
+        photos: member.photos.filter((photo) => photo.id !== photoId),
+      }));
     });
   }
 
@@ -88,8 +90,15 @@ export class PhotoEditor implements OnInit {
 
     this.uploader()!.onSuccessItem = (item, response, status, header) => {
       if (response) {
-        const photo = JSON.parse(response);
-        this.member.photos.push(photo);
+        const photo: Photo = JSON.parse(response);
+        this.member().photos.push(photo);
+        if (photo.isMain) {
+          if (this.user) {
+            this.user.photoUrl = photo.url;
+            this.accountService.setCurrentUser(this.user);
+            this.member().photoUrl = photo.url;
+          }
+        }
       }
     };
 

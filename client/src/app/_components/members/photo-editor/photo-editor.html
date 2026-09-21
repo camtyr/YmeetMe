@@ -1,5 +1,5 @@
 <div class="row">
-  @for (photo of member.photos; track $index) {
+  @for (photo of member().photos; track $index) {
   <div class="col-2">
     <img src="{{photo.url}}" alt="{{photo.url}}" class="img-thumbnail p-1" />
     <div class="text-center">

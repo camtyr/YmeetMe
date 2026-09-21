@@ -14,29 +14,3 @@
     border-top: none;
 }
 
-/* member-tab */
-.tab-pane {
-    border: 2px solid #0e0d0d;
-    padding: 10px;
-    border-radius: 4px;
-}
-
-.nav-tabs>.nav-item:hover {
-    border-bottom: 4px solid #fbcdcf;
-    background: none !important;
-    color: #333333;
-}
-
-.nav-tabs>.nav-item.active {
-    border-bottom: 4px solid #E95420;
-    position: relative;
-    color: #333333;
-}
-
-.tab-content {
-    margin-top: -3px;
-    background-color: #fff;
-    border: 0;
-    border-top: 1px solid #eee;
-    padding: 15px 0;
-}

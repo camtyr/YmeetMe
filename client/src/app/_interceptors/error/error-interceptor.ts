@@ -25,7 +25,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
               throw modalStateErrors.flat();
             }
             else {
-              toastr.error("Bad Request", error.status);
+              toastr.error(error.error, error.status);
             }
             break;
 

@@ -43,7 +43,7 @@
     </ul>
 
     <div class="dropdown" dropdown>
-      <img src="{{currentUser.photoUrl || './assets/user.png'}}" alt="currentUser.photoUrl" />
+      <img src="{{currentUser.photoUrl || '/assets/user.png'}}" alt="{{currentUser.photoUrl}}" />
       <a class="dropdown-toggle text-light text-decoration-none" dropdownToggle
         >Welcome {{currentUser.userName | titlecase}}</a
       >
