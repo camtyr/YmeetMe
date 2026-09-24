@@ -22,10 +22,7 @@ namespace API.Entities
         public ICollection<Photo>? Photos { get; set; }
         public ICollection<UserLike>? LikeByUsers { get; set; }
         public ICollection<UserLike>? LikedUsers { get; set; }
-
-        // public int GetAge()
-        // {
-        //     return DateOfBirth.CalculateAge();
-        // }
+        public ICollection<Message>? MessagesSent { get; set; }
+        public ICollection<Message>? MessageRecieved { get; set; }
     }
 }

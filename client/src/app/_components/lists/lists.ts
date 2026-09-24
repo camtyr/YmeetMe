@@ -5,10 +5,11 @@ import { ButtonRadioDirective, ButtonsModule } from 'ngx-bootstrap/buttons';
 import { FormsModule } from '@angular/forms';
 import { MemberCard } from '../members/member-card/member-card';
 import { Pagination } from '../../_models/pagination';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @Component({
   selector: 'app-lists',
-  imports: [ButtonRadioDirective, ButtonsModule, FormsModule, MemberCard],
+  imports: [ButtonRadioDirective, ButtonsModule, FormsModule, MemberCard, PaginationModule],
   templateUrl: './lists.html',
   styleUrl: './lists.css',
 })

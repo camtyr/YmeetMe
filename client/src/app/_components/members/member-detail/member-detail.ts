@@ -1,51 +1,95 @@
-import { Component, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  signal,
+  ViewChild,
+  WritableSignal,
+} from '@angular/core';
 import { Member } from '../../../_models/member';
 import { MembersService } from '../../../_services/members/members-service';
 import { ActivatedRoute } from '@angular/router';
-import { TabsModule } from 'ngx-bootstrap/tabs';
+import { TabDirective, TabsetComponent, TabsModule } from 'ngx-bootstrap/tabs';
 import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
 import { DatePipe, NgStyle } from '@angular/common';
 import { TimeagoPipe } from 'ngx-timeago';
+import { MemberMessages } from '../member-messages/member-messages';
+import { MessageService } from '../../../_services/message/message-service';
+import { Message } from '../../../_models/message';
 
 @Component({
   selector: 'app-member-detail',
-  imports: [TabsModule, GalleryModule, NgStyle, DatePipe, TimeagoPipe],
+  imports: [
+    TabsModule,
+    GalleryModule,
+    NgStyle,
+    DatePipe,
+    TimeagoPipe,
+    MemberMessages,
+  ],
   templateUrl: './member-detail.html',
   styleUrl: './member-detail.css',
 })
 export class MemberDetail implements OnInit {
-  member = signal<Member | undefined>(undefined);
+  @ViewChild('memberTabs', { static: true }) memberTabs!: TabsetComponent;
+  member = signal<Member>({} as Member);
   images = signal<GalleryItem[]>([]);
-  
-  constructor(private memberService: MembersService, private route: ActivatedRoute) {}
+  activeTab!: TabDirective;
+  messages = signal<Message[] | undefined>(undefined);
+
+  constructor(
+    private messageService: MessageService,
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnInit() {
-    this.loadMember();
+    this.route.data.subscribe((data) => {
+      this.member.set(data.member);
+    });
+
+    this.route.queryParams.subscribe((params) => {
+      const tab = params.tab ? params.tab : 0;
+
+      setTimeout(() => {
+        this.selectTab(tab);
+      });
+    });
+
     this.images.set(this.getImages());
   }
 
   getImages(): GalleryItem[] {
     const imageUrls: GalleryItem[] = [];
-    const photos = this.member()?.photos ?? [];
+    const photos = this.member().photos ?? [];
 
     for (const photo of photos) {
-      imageUrls.push(new ImageItem({
-        thumb: photo?.url,
-        src: photo?.url
-      }));
+      imageUrls.push(
+        new ImageItem({
+          thumb: photo?.url,
+          src: photo?.url,
+        }),
+      );
     }
 
     return imageUrls;
   }
 
-
-  loadMember(){
-    const username = this.route.snapshot.paramMap.get('username');
+  loadMessages() {
+    const username = this.member().userName;
     if (!username) return;
 
-    this.memberService.getMember(username).subscribe(member =>{
-        this.member.set(member);
-        this.images.set(this.getImages());
-    })
+    this.messageService.getMessageThread(username).subscribe((messages) => {
+      this.messages.set(messages);
+    });
+  }
+
+  selectTab(tabId: number) {
+    this.memberTabs.tabs[tabId].active = true;
+  }
+
+  onTabActivated(data: TabDirective) {
+    this.activeTab = data;
+    if (this.activeTab.heading === 'Messages') {
+      this.loadMessages();
+    }
   }
 }

@@ -43,9 +43,9 @@
     </ul>
 
     <div class="dropdown" dropdown>
-      <img src="{{currentUser.photoUrl || '/assets/user.png'}}" alt="{{currentUser.photoUrl}}" />
+      <img src="{{currentUser.photoUrl || '/assets/user.png'}}" alt="{{currentUser.knownAs}}" />
       <a class="dropdown-toggle text-light text-decoration-none" dropdownToggle
-        >Welcome {{currentUser.knownAs | titlecase}}</a
+        >  Welcome {{currentUser.knownAs | titlecase}}</a
       >
       <div class="dropdown-menu mt-3" *dropdownMenu>
         <a class="dropdown-item" routerLink="/member/edit">Edit Profile</a>

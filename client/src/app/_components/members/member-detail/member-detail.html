@@ -1,4 +1,4 @@
-@if(member()){
+
 <div class="row">
   <div class="col-4">
     <div class="card">
@@ -27,7 +27,7 @@
         <div class="card-footer">
           <div class="btn-group dflex">
             <button class="btn btn-primary">Like</button>
-            <button class="btn btn-success">Message</button>
+            <button (click)="selectTab(3)" class="btn btn-success">Message</button>
           </div>
         </div>
       </div>
@@ -35,26 +35,27 @@
   </div>
 
   <div class="col-8">
-    <tabset class="member-tabset">
-      <tab heading="About {{member().knownAs}}" [active]="true">
+    <tabset class="member-tabset" #memberTabs>
+      <tab heading="About {{member().knownAs}}" [active]="true" (selectTab)="onTabActivated($event)">
         <h4 class="mt-2">Decription</h4>
         <p>{{member().introduction}}</p>
         <h4 class="mt-2">Looking for</h4>
         <p>{{member().lookingFor}}</p>
       </tab>
-      <tab heading="Interests">
+      <tab heading="Interests" (selectTab)="onTabActivated($event)">
         <h4 class="mt-2">Interests</h4>
         <p>{{member().interests}}</p>
       </tab>
-      <tab heading="Photos">
+      <tab heading="Photos" (selectTab)="onTabActivated($event)">
         <gallery
           [items]="images()"
-          [imageSize]="cover"
+          [imageSize]="'cover'"
           [ngStyle]="{'width': '500px', 'height': '500px', 'background-color': 'transparent'}"
         ></gallery>
       </tab>
-      <tab heading="Messages"> Message will go here </tab>
+      <tab heading="Messages" (selectTab)="onTabActivated($event)">
+        <app-member-messages [messages]="messages" [username]="member().userName"></app-member-messages>
+      </tab>
     </tabset>
   </div>
 </div>
-}

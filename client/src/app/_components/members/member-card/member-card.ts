@@ -25,4 +25,5 @@ export class MemberCard implements OnInit {
       this.toastr.success('You have liked ' + member.knownAs);
     });
   }
+  
 }

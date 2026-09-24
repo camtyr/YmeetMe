@@ -13,6 +13,7 @@ using API.Helpers;
 
 namespace API.Controllers
 {
+    [Authorize]
     public class UsersController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
@@ -25,7 +26,6 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
         {
@@ -51,7 +51,6 @@ namespace API.Controllers
             return BadRequest("Failed to get members");
         }
 
-        [Authorize]
         [HttpGet("{userName}", Name = "GetUser")]
         public async Task<ActionResult<MemberDto>> GetUser(string userName)
         {
@@ -64,7 +63,6 @@ namespace API.Controllers
             return user;
         }
 
-        [Authorize]
         [HttpPut]
         public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
         {
@@ -87,7 +85,6 @@ namespace API.Controllers
             return BadRequest("Failed to update user");
         }
 
-        [Authorize]
         [HttpPost("add-photo")]
         public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
         {
@@ -127,7 +124,6 @@ namespace API.Controllers
             return BadRequest("Problem adding photo");
         }
 
-        [Authorize]
         [HttpPut("set-main-photo/{photoId}")]
         public async Task<ActionResult> SetMainPhoto(int photoId)
         {
@@ -156,7 +152,6 @@ namespace API.Controllers
             return BadRequest("Failed to set main photo");
         }
 
-        [Authorize]
         [HttpDelete("delete-photo/{photoId}")]
         public async Task<ActionResult> DeletePhoto(int photoId)
         {
