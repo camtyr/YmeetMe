@@ -2,6 +2,7 @@ using API.Data;
 using API.Helpers;
 using API.Interfaces;
 using API.Services;
+using API.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Extensions
@@ -17,6 +18,10 @@ namespace API.Extensions
             services.AddScoped<ILikeRepository, LikeRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<LogUserActivity>();
+            #endregion
+
+            #region Add Singleton services to the container
+            services.AddSingleton<PresenceTracker>();
             #endregion
 
             #region Add AutoMapper to the container
@@ -36,6 +41,10 @@ namespace API.Extensions
 
             #region Add CORS policy to the container
             services.AddCors();
+            #endregion
+
+            #region Add SignalR
+            services.AddSignalR();
             #endregion
 
             return services;

@@ -1,6 +1,7 @@
 using API.Data;
 using API.Extensions;
 using API.Middleware;
+using API.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,6 +48,7 @@ app.UseCors(policy =>
 {
     policy.AllowAnyHeader()
           .AllowAnyMethod()
+          .AllowCredentials()
           .WithOrigins("http://localhost:4200");
 });
 
@@ -73,6 +75,8 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast");
 
 app.MapControllers();
+app.MapHub<PresenceHub>("hubs/presence");
+app.MapHub<MessageHub>("hubs/message");
 
 await app.RunAsync();
 

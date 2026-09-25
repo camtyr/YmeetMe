@@ -1,9 +1,9 @@
 <div class="card">
   <div class="card-body">
-    @if(messages()?.length === 0){ No messages yet... say hi by using the
+    @if((messageService.messageThread$ | async)?.length === 0){ No messages yet... say hi by using the
     message box below }
     <!--  -->
-    @if (messages()?.length > 0) { @for (message of messages(); track $index) {
+    @if ((messageService.messageThread$ | async)?.length > 0) { @for (message of (messageService.messageThread$ | async); track $index) {
     <div>
       <span class="chat-img float-end">
         <img

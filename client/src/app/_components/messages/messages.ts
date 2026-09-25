@@ -49,15 +49,17 @@ export class Messages implements OnInit {
       });
   }
 
-  deleteMessage(id: number){
-    this.messageService.deleteMessage(id).subscribe(() =>{
-      this.messages.update(messages =>
-        messages?.filter(message => message.messageId !== id)
+  deleteMessage(id: number) {
+    this.messageService.deleteMessage(id).subscribe(() => {
+      this.messages.update((messages) =>
+        messages?.filter((message) => message.messageId !== id),
       );
-    })
+    });
   }
 
   pageChanged(event: any) {
+    if (this.pageNumber === event.page) return;
+
     this.pageNumber = event.page;
     this.loadMessages();
   }
