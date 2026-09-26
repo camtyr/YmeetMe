@@ -26,9 +26,9 @@ export class DateInput implements ControlValueAccessor {
   @Input() label!: string;
   @Input() maxDate!: Date;
   bsConfig: Partial<BsDatepickerConfig> = {
-    containerClass: 'theme-red',
+    containerClass: 'theme-blue',
     dateInputFormat: 'DD MMMM YYYY',
-    isAnimated: false
+    adaptivePosition: true
   };
 
   constructor(@Self() public ngControl: NgControl) {

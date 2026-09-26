@@ -88,7 +88,6 @@ namespace API.Data
                     && m.Sender.UserName == currentUserName && !m.SenderDeleted
                 )
                 .OrderBy(m => m.MessageSent)
-                .ProjectTo<MessageDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
             var unreadMessages = messages.Where(m => m.DateRead == null && m.RecipientUserName == currentUserName).ToList();
@@ -102,7 +101,7 @@ namespace API.Data
                 await _context.SaveChangesAsync();
             }
 
-            return messages;
+            return _mapper.Map<List<MessageDto>>(messages);
         }
 
         public void RemoveConnection(Connection connection)

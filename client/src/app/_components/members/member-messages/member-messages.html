@@ -1,15 +1,15 @@
 <div class="card">
-  <div class="card-body">
+  <div
+    class="card-body"
+    #scrollMe
+    style="overflow: scroll; height: 535px"
+    [scrollTop]="scrollMe.scrollHeight"
+  >
     @if((messageService.messageThread$ | async)?.length === 0){ No messages
     yet... say hi by using the message box below }
     <!--  -->
     @if ((messageService.messageThread$ | async)?.length > 0) {
-    <ul
-      #scrollMe
-      style="overflow: scroll; height: 500px"
-      [scrollTop]="scrollMe.scrollHeight"
-      class="chat"
-    >
+    <ul class="chat">
       @for (message of (messageService.messageThread$ | async); track $index) {
       <li>
         <div>
@@ -58,11 +58,11 @@
         />
         <div class="input-group-append">
           <button
-            [disabled]="!messageForm.valid"
+            [disabled]="!messageForm.valid || loading()"
             class="btn btn-primary"
             type="submit"
           >
-            Send
+            Send @if(loading()){<i class="fa fa-spinner fa-spin"></i>}
           </button>
         </div>
       </div>

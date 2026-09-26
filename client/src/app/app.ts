@@ -13,8 +13,6 @@ import { User } from './_models/user';
   styleUrl: './app.css',
 })
 export class App implements OnInit {
-  protected title = 'Dating App';
-
   constructor(
     private accountService: AccountService,
     private presenceService: PresenceService,
@@ -25,14 +23,24 @@ export class App implements OnInit {
   }
 
   setCurrentUser() {
-    const user: string | null = localStorage.getItem('user');
-    if (user) {
-      const currentUser: User = JSON.parse(user);
-
-      this.accountService.setCurrentUser(currentUser);
-      this.presenceService.createHubConnection(currentUser);
-    } else {
+    const storedUser = localStorage.getItem('user');
+    if (!storedUser) {
       this.accountService.setCurrentUser(null);
+      return;
     }
+
+    const currentUser: User = JSON.parse(storedUser);
+    if (this.isTokenExpired(currentUser.token)) {
+      this.accountService.setCurrentUser(null);
+      return;
+    }
+
+    this.accountService.setCurrentUser(currentUser);
+    this.presenceService.createHubConnection(currentUser);
+  }
+
+  private isTokenExpired(token: string): boolean {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.exp * 1000 <= Date.now();
   }
 }

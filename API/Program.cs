@@ -55,6 +55,9 @@ app.UseCors(policy =>
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -77,6 +80,7 @@ app.MapGet("/weatherforecast", () =>
 app.MapControllers();
 app.MapHub<PresenceHub>("hubs/presence");
 app.MapHub<MessageHub>("hubs/message");
+app.MapFallbackToController("Index", "Fallback");
 
 await app.RunAsync();
 

@@ -48,7 +48,7 @@ export class AccountService {
     } else {
       localStorage.removeItem('user');
     }
-    
+
     this.currentUserSource.next(user);
   }
 
