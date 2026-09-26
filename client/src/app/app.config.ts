@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -9,12 +9,14 @@ import { errorInterceptor } from './_interceptors/error/error-interceptor';
 import { jwtInterceptor } from './_interceptors/jwt/jwt-interceptor';
 import { loadingInterceptor } from './_interceptors/loading/loading-interceptor';
 import { provideTimeago } from 'ngx-timeago';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),
+    importProvidersFrom(ModalModule.forRoot()),
     
     provideHttpClient(
       withInterceptors([

@@ -1,38 +1,48 @@
 <div class="card">
   <div class="card-body">
-    @if((messageService.messageThread$ | async)?.length === 0){ No messages yet... say hi by using the
-    message box below }
+    @if((messageService.messageThread$ | async)?.length === 0){ No messages
+    yet... say hi by using the message box below }
     <!--  -->
-    @if ((messageService.messageThread$ | async)?.length > 0) { @for (message of (messageService.messageThread$ | async); track $index) {
-    <div>
-      <span class="chat-img float-end">
-        <img
-          class="rounded-circle"
-          src="{{message.senderPhotoUrl || './assets/user.png'}}"
-          alt="{{message.senderUserName}}"
-        />
-      </span>
-      <div class="chat-body">
-        <div class="header">
-          <small class="text-muted">
-            <span class="fa fa-clock-o"
-              > {{message.messageSent | timeago}}</span
-            >
+    @if ((messageService.messageThread$ | async)?.length > 0) {
+    <ul
+      #scrollMe
+      style="overflow: scroll; height: 500px"
+      [scrollTop]="scrollMe.scrollHeight"
+      class="chat"
+    >
+      @for (message of (messageService.messageThread$ | async); track $index) {
+      <li>
+        <div>
+          <span class="chat-img float-end">
+            <img
+              class="rounded-circle"
+              src="{{message.senderPhotoUrl || './assets/user.png'}}"
+              alt="{{message.senderUserName}}"
+            />
+          </span>
+          <div class="chat-body">
+            <div class="header">
+              <small class="text-muted">
+                <span class="fa fa-clock-o">
+                  {{message.messageSent | timeago}}</span
+                >
 
-            @if(!message.dateRead && message.senderUserName !== username){<span
-              class="text-danger"
-              > (unread)</span
-            >} @if(message.dateRead && message.senderUserName !==
-            username){<span class="text-success"
-              > (read {{message.dateRead | timeago}})</span
-            >}
-          </small>
+                @if(!message.dateRead && message.senderUserName !==
+                username){<span class="text-danger"> (unread)</span>}
+                @if(message.dateRead && message.senderUserName !==
+                username){<span class="text-success">
+                  (read {{message.dateRead | timeago}})</span
+                >}
+              </small>
+            </div>
+
+            <p>{{message.content}}</p>
+          </div>
         </div>
-
-        <p>{{message.content}}</p>
-      </div>
-    </div>
-    } }
+      </li>
+      }
+    </ul>
+    }
   </div>
 
   <div class="card-footer">
@@ -47,7 +57,13 @@
           placeholder="Send a private message"
         />
         <div class="input-group-append">
-          <button [disabled]="!messageForm.valid" class="btn btn-primary" type="submit">Send</button>
+          <button
+            [disabled]="!messageForm.valid"
+            class="btn btn-primary"
+            type="submit"
+          >
+            Send
+          </button>
         </div>
       </div>
     </form>

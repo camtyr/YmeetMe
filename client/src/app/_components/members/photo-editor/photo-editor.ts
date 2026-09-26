@@ -16,6 +16,7 @@ import { take } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MembersService } from '../../../_services/members/members-service';
 import { Photo } from '../../../_models/photo';
+import { ConfirmService } from '../../../_services/confirm/confirm-service';
 
 @Component({
   selector: 'app-photo-editor',
@@ -34,6 +35,7 @@ export class PhotoEditor implements OnInit {
     private accountService: AccountService,
     private cdr: ChangeDetectorRef,
     private memberService: MembersService,
+    private confirmService: ConfirmService,
   ) {
     this.accountService.currentUser$
       .pipe(take(1))
@@ -63,12 +65,16 @@ export class PhotoEditor implements OnInit {
   }
 
   deletePhoto(photoId: number) {
-    this.memberService.deletePhoto(photoId).subscribe(() => {
-      this.member.update((member) => ({
-        ...member,
-        photos: member.photos.filter((photo) => photo.id !== photoId),
-      }));
-    });
+    this.confirmService
+      .confirm('Confirm delete photo', 'This cannot be undone')
+      .subscribe((result) => {
+        this.memberService.deletePhoto(photoId).subscribe(() => {
+          this.member.update((member) => ({
+            ...member,
+            photos: member.photos.filter((photo) => photo.id !== photoId),
+          }));
+        });
+      });
   }
 
   initializeUploader() {

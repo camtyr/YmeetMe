@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   Input,
   OnInit,
@@ -18,10 +19,10 @@ import { AsyncPipe } from '@angular/common';
   imports: [TimeagoModule, FormsModule, AsyncPipe],
   templateUrl: './member-messages.html',
   styleUrl: './member-messages.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MemberMessages implements OnInit {
   @ViewChild('messageForm') messageForm!: NgForm;
-  @Input() messages!: WritableSignal<Message[]>;
   @Input() username!: string;
   messageContent!: string;
 
@@ -30,8 +31,10 @@ export class MemberMessages implements OnInit {
   ngOnInit(): void {}
 
   sendMessage() {
-    this.messageService.sendMessage(this.username, this.messageContent).then(() =>{
-      this.messageForm.reset();
-    });
+    this.messageService
+      .sendMessage(this.username, this.messageContent)
+      .then(() => {
+        this.messageForm.reset();
+      });
   }
 }

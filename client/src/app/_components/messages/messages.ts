@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
 import { TimeagoModule } from 'ngx-timeago';
+import { ConfirmService } from '../../_services/confirm/confirm-service';
 
 @Component({
   selector: 'app-messages',
@@ -31,7 +32,10 @@ export class Messages implements OnInit {
   pageSize = 5;
   loading = signal(false);
 
-  constructor(private messageService: MessageService) {}
+  constructor(
+    private messageService: MessageService,
+    private confirmService: ConfirmService,
+  ) {}
 
   ngOnInit(): void {
     this.loadMessages();
@@ -50,11 +54,17 @@ export class Messages implements OnInit {
   }
 
   deleteMessage(id: number) {
-    this.messageService.deleteMessage(id).subscribe(() => {
-      this.messages.update((messages) =>
-        messages?.filter((message) => message.messageId !== id),
-      );
-    });
+    this.confirmService
+      .confirm('Confirm delete message', 'This cannot be undone')
+      .subscribe((result) => {
+        if (result) {
+          this.messageService.deleteMessage(id).subscribe(() => {
+            this.messages.update((messages) =>
+              messages?.filter((message) => message.messageId !== id),
+            );
+          });
+        }
+      });
   }
 
   pageChanged(event: any) {

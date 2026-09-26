@@ -74,6 +74,7 @@
     <td>{{message.messageSent | timeago}}</td>
     <td>
       <button
+        type="button"
         (click)="$event.stopPropagation()"
         (click)="deleteMessage(message.messageId)"
         class="btn btn-danger"
